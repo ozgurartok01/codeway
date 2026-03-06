@@ -1,0 +1,51 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+build/
+
+# logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# runtime files
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# coverage
+coverage/
+
+# typescript
+*.tsbuildinfo
+
+# editor folders
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# linux
+*.swp
+*.swo
+
+# docker
+docker-data/
+
+# misc
+tmp/
+temp/
