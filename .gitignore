@@ -49,3 +49,4 @@ docker-data/
 # misc
 tmp/
 temp/
+firebase-service-account.json
