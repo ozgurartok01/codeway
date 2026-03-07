@@ -52,3 +52,60 @@ export async function get(uid: string, transcriptionId: string) {
     ...doc.data(),
   };
 }
+
+export async function getAll(uid: string, limit: number, cursor?: string) {
+  let query = firestore
+    .collection("users")
+    .doc(uid)
+    .collection("transcriptions")
+    .orderBy("created_at", "desc")
+    .limit(limit);
+
+  if (cursor) {
+    const cursorDoc = await firestore
+      .collection("users")
+      .doc(uid)
+      .collection("transcriptions")
+      .doc(cursor)
+      .get();
+
+    if (cursorDoc.exists) {
+      query = query.startAfter(cursorDoc);
+    }
+  }
+
+  const snapshot = await query.get();
+
+  const results = snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  const nextCursor =
+    snapshot.docs.length === limit
+      ? snapshot.docs[snapshot.docs.length - 1].id
+      : null;
+
+  return {
+    transcriptions: results,
+    next_cursor: nextCursor,
+  };
+}
+
+export async function remove(uid: string, transcriptionId: string) {
+  const docRef = firestore
+    .collection("users")
+    .doc(uid)
+    .collection("transcriptions")
+    .doc(transcriptionId);
+
+  const doc = await docRef.get();
+
+  if (!doc.exists) {
+    return false;
+  }
+
+  await docRef.delete();
+
+  return true;
+}
